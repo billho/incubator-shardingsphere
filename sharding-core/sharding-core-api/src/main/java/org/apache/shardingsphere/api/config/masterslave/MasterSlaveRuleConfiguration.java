@@ -19,7 +19,9 @@ package org.apache.shardingsphere.api.config.masterslave;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.apache.shardingsphere.api.config.RuleConfiguration;
 
 import java.util.Collection;
@@ -30,16 +32,18 @@ import java.util.Collection;
  * @author zhangliang
  * @author panjuan
  */
-@Getter
+//@Getter
+@Data
+@NoArgsConstructor
 public class MasterSlaveRuleConfiguration implements RuleConfiguration {
     
-    private final String name;
+    private String name;
     
-    private final String masterDataSourceName;
+    private String masterDataSourceName;
     
-    private final Collection<String> slaveDataSourceNames;
+    private Collection<String> slaveDataSourceNames;
     
-    private final LoadBalanceStrategyConfiguration loadBalanceStrategyConfiguration;
+    private LoadBalanceStrategyConfiguration loadBalanceStrategyConfiguration;
     
     public MasterSlaveRuleConfiguration(final String name, final String masterDataSourceName, final Collection<String> slaveDataSourceNames) {
         this(name, masterDataSourceName, slaveDataSourceNames, null);
