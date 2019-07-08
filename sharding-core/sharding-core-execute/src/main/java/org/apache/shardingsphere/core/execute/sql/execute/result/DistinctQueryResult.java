@@ -51,7 +51,7 @@ import java.util.Set;
 @Getter(AccessLevel.PROTECTED)
 public class DistinctQueryResult implements QueryResult {
     
-    private final Multimap<String, Integer> columnLabelAndIndexMap;
+    private final Mulgitimap<String, Integer> columnLabelAndIndexMap;
     
     private final Iterator<QueryRow> resultData;
     
@@ -187,6 +187,12 @@ public class DistinctQueryResult implements QueryResult {
     }
     
     protected Integer getColumnIndex(final String columnLabel) {
-        return new ArrayList<>(columnLabelAndIndexMap.get(columnLabel)).get(0);
+        if(columnLabelAndIndexMap.containsKey(columnLabel) && columnLabelAndIndexMap.get(columnLabel).size()>0) {
+            return new ArrayList<>(columnLabelAndIndexMap.get(columnLabel)).get(0);
+        }
+        else{
+            String stripColLabel = columnLabel.substring(columnLabel.lastIndexOf(".")+1);
+            return new ArrayList<>(columnLabelAndIndexMap.get(stripColLabel)).get(0);
+        }
     }
 }
