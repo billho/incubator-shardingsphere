@@ -51,7 +51,7 @@ import java.util.Set;
 @Getter(AccessLevel.PROTECTED)
 public class DistinctQueryResult implements QueryResult {
     
-    private final Mulgitimap<String, Integer> columnLabelAndIndexMap;
+    private final Multimap<String, Integer> columnLabelAndIndexMap;
     
     private final Iterator<QueryRow> resultData;
     
