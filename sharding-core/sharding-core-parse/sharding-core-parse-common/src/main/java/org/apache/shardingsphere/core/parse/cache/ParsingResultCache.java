@@ -21,6 +21,7 @@ import org.apache.commons.collections4.map.AbstractReferenceMap;
 import org.apache.commons.collections4.map.ReferenceMap;
 import org.apache.shardingsphere.core.parse.antlr.sql.statement.SQLStatement;
 
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -30,9 +31,15 @@ import java.util.Map;
  * @author zhaojun
  */
 public final class ParsingResultCache {
-    
-    private final Map<String, SQLStatement> cache = new ReferenceMap<>(AbstractReferenceMap.ReferenceStrength.SOFT, AbstractReferenceMap.ReferenceStrength.SOFT, 65535, 1);
-    
+
+    /**
+     * fix 因高并发引起的hasmap 扩容引起的进程死锁
+     */
+    private final Map<String, SQLStatement> cache =
+            Collections.synchronizedMap(
+                    new ReferenceMap<String, SQLStatement>(AbstractReferenceMap.ReferenceStrength.SOFT, AbstractReferenceMap.ReferenceStrength.SOFT, 65535, 1)
+            );
+
     /**
      * Put SQL and parsing result into cache.
      * 
