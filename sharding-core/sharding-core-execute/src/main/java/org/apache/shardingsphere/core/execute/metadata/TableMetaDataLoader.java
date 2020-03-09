@@ -30,6 +30,7 @@ import org.apache.shardingsphere.core.metadata.table.TableMetaData;
 import org.apache.shardingsphere.core.rule.DataNode;
 import org.apache.shardingsphere.core.rule.ShardingDataSourceNames;
 import org.apache.shardingsphere.core.rule.ShardingRule;
+import org.apache.shardingsphere.core.util.StringUtil;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -145,7 +146,12 @@ public final class TableMetaDataLoader {
     
     private Collection<String> getPrimaryKeys(final Connection connection, final String catalog, final String actualTableName) throws SQLException {
         Collection<String> result = new HashSet<>();
-        try (ResultSet resultSet = connection.getMetaData().getPrimaryKeys(catalog, null, actualTableName)) {
+        String ctl = catalog;
+        try{
+            ctl = (null == catalog || catalog.trim().length()==0) ? connection.getCatalog() : catalog;
+        }
+        catch (Exception e){}
+        try ( ResultSet resultSet = connection.getMetaData().getPrimaryKeys(ctl,null, actualTableName) ) {
             while (resultSet.next()) {
                 result.add(resultSet.getString("COLUMN_NAME"));
             }
