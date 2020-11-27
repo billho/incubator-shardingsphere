@@ -17,6 +17,7 @@
 
 package org.apache.shardingsphere.core.parse.cache;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.map.AbstractHashedMap;
 import org.apache.commons.collections4.map.AbstractReferenceMap;
 import org.apache.commons.collections4.map.ReferenceMap;
@@ -31,6 +32,7 @@ import java.util.Map;
  * @author zhangliang
  * @author zhaojun
  */
+@Slf4j
 public final class ParsingResultCache {
 
     /**
@@ -50,8 +52,10 @@ public final class ParsingResultCache {
      */
     int mythreshold = 65000 ; //大概是 65536 * 0.9
     public void put(final String sql, final SQLStatement sqlStatement) {
+        log.info("begin map, ParsingResultCache size is:" + cache.size());
         if (cache.size()>mythreshold) {
             this.mythreshold = getThreshold();
+            clear();
             synchronized (cache) {
                 cache.put(sql, sqlStatement);
             }
@@ -59,6 +63,7 @@ public final class ParsingResultCache {
         else{
             cache.put(sql, sqlStatement);
         }
+        log.info("end map, ParsingResultCache size is:" + cache.size());
     }
 
     private int getThreshold(){
