@@ -52,8 +52,8 @@ public final class ParsingResultCache {
      */
     int mythreshold = 65000 ; //大概是 65536 * 0.9
     public void put(final String sql, final SQLStatement sqlStatement) {
-        log.info("begin map, ParsingResultCache size is:" + cache.size());
         if (cache.size()>mythreshold) {
+            log.info("begin map, ParsingResultCache size is:" + cache.size() + ", to clear.");
             this.mythreshold = getThreshold();
             clear();
             synchronized (cache) {
@@ -63,7 +63,6 @@ public final class ParsingResultCache {
         else{
             cache.put(sql, sqlStatement);
         }
-        log.info("end map, ParsingResultCache size is:" + cache.size());
     }
 
     private int getThreshold(){
